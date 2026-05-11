@@ -1,0 +1,269 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@300;400;700&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0}
+  .menu-wrap{font-family:'Lato',sans-serif;background:linear-gradient(135deg,#3d1c02 0%,#6b3a1f 50%,#3d1c02 100%);min-height:100vh;padding:0 0 2rem}
+  .header{text-align:center;padding:2rem 1rem 1rem;background:rgba(0,0,0,0.3)}
+  .header h1{font-family:'Playfair Display',serif;color:#f5d89e;font-size:2.2rem;letter-spacing:2px;text-shadow:0 2px 8px rgba(0,0,0,0.5)}
+  .header p{color:#d4a96a;font-size:0.85rem;letter-spacing:3px;text-transform:uppercase;margin-top:4px}
+  .badge{display:inline-block;background:#d4a96a;color:#3d1c02;font-size:0.7rem;font-weight:700;padding:3px 10px;border-radius:12px;letter-spacing:2px;margin-top:8px;text-transform:uppercase}
+  .tabs{display:flex;justify-content:center;gap:8px;padding:1rem;flex-wrap:wrap}
+  .tab{background:rgba(255,255,255,0.1);color:#f5d89e;border:1px solid rgba(212,169,106,0.4);border-radius:20px;padding:6px 16px;font-size:0.8rem;cursor:pointer;font-family:'Lato',sans-serif;letter-spacing:1px;transition:all 0.2s}
+  .tab.active,.tab:hover{background:#d4a96a;color:#3d1c02;border-color:#d4a96a;font-weight:700}
+  .section{display:none;padding:0 1rem}
+  .section.active{display:block}
+  .section-title{font-family:'Playfair Display',serif;color:#f5d89e;font-size:1.1rem;text-align:center;margin:1rem 0 0.75rem;letter-spacing:1px;border-bottom:1px solid rgba(212,169,106,0.3);padding-bottom:0.5rem}
+  .items-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .item-card{background:rgba(255,255,255,0.08);border:1px solid rgba(212,169,106,0.25);border-radius:12px;padding:12px;cursor:pointer;transition:all 0.2s;position:relative}
+  .item-card:hover{background:rgba(212,169,106,0.15);border-color:#d4a96a}
+  .item-card.in-cart{border-color:#d4a96a;background:rgba(212,169,106,0.12)}
+  .item-name{color:#f5d89e;font-size:0.82rem;font-weight:700;line-height:1.3;margin-bottom:4px}
+  .item-price{color:#d4a96a;font-size:1rem;font-weight:700}
+  .item-qty{position:absolute;top:8px;right:8px;background:#d4a96a;color:#3d1c02;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700}
+  .add-btn{position:absolute;bottom:8px;right:8px;background:rgba(212,169,106,0.2);border:1px solid rgba(212,169,106,0.5);color:#d4a96a;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;cursor:pointer;transition:all 0.2s}
+  .add-btn:hover{background:#d4a96a;color:#3d1c02}
+  .cart-bar{position:sticky;bottom:12px;margin:1.5rem 1rem 0;background:#d4a96a;border-radius:16px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:all 0.2s;box-shadow:0 4px 20px rgba(0,0,0,0.4)}
+  .cart-bar:hover{background:#e8c07a}
+  .cart-bar-left{color:#3d1c02}
+  .cart-bar-title{font-weight:700;font-size:0.9rem}
+  .cart-bar-sub{font-size:0.75rem;opacity:0.7}
+  .cart-bar-total{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:#3d1c02}
+  .cart-modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:100;align-items:flex-end;justify-content:center}
+  .cart-modal.open{display:flex}
+  .cart-sheet{background:#2a1200;border-radius:24px 24px 0 0;width:100%;max-width:520px;max-height:80vh;overflow-y:auto;padding:1.5rem}
+  .cart-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
+  .cart-header h2{font-family:'Playfair Display',serif;color:#f5d89e;font-size:1.2rem}
+  .close-btn{background:rgba(255,255,255,0.1);border:none;color:#f5d89e;border-radius:50%;width:32px;height:32px;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center}
+  .cart-item{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(212,169,106,0.15)}
+  .cart-item-name{color:#f5d89e;font-size:0.85rem;flex:1}
+  .cart-item-controls{display:flex;align-items:center;gap:8px}
+  .qty-btn{background:rgba(212,169,106,0.2);border:1px solid rgba(212,169,106,0.4);color:#d4a96a;border-radius:6px;width:28px;height:28px;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center}
+  .qty-btn:hover{background:#d4a96a;color:#3d1c02}
+  .cart-item-qty{color:#f5d89e;font-weight:700;min-width:20px;text-align:center;font-size:0.9rem}
+  .cart-item-subtotal{color:#d4a96a;font-weight:700;font-size:0.9rem;min-width:48px;text-align:right}
+  .cart-total-row{display:flex;justify-content:space-between;padding:14px 0 0;margin-top:4px}
+  .cart-total-label{color:#d4a96a;font-size:1rem;font-weight:700}
+  .cart-total-val{font-family:'Playfair Display',serif;color:#f5d89e;font-size:1.4rem;font-weight:700}
+  .wa-btn{width:100%;margin-top:1rem;background:#25D366;border:none;color:#fff;border-radius:14px;padding:14px;font-size:1rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;font-family:'Lato',sans-serif;transition:all 0.2s}
+  .wa-btn:hover{background:#1ebe5c}
+  .empty-cart{text-align:center;color:rgba(212,169,106,0.5);padding:2rem;font-size:0.9rem}
+  .version-badge{text-align:center;margin:0.5rem 1rem 0;font-size:0.7rem;color:rgba(212,169,106,0.5);letter-spacing:2px;text-transform:uppercase}
+</style>
+
+<div class="menu-wrap">
+  <div class="header">
+    <h1>Delicias Álvarez</h1>
+    <p>Te ofrece</p>
+    <span class="badge" id="version-badge">Menú Cafetería</span>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="showSection('refacciones')">Refacciones</button>
+    <button class="tab" onclick="showSection('bebidas')">Bebidas</button>
+    <button class="tab" onclick="showSection('postres')">Postres</button>
+  </div>
+
+  <div class="section active" id="sec-refacciones">
+    <div class="section-title">Refacciones</div>
+    <div class="items-grid" id="grid-refacciones"></div>
+  </div>
+
+  <div class="section" id="sec-bebidas">
+    <div class="section-title">Bebidas Frías</div>
+    <div class="items-grid" id="grid-frias"></div>
+    <div class="section-title" style="margin-top:1.2rem">Bebidas Calientes</div>
+    <div class="items-grid" id="grid-calientes"></div>
+  </div>
+
+  <div class="section" id="sec-postres">
+    <div class="section-title">Postres</div>
+    <div class="items-grid" id="grid-postres"></div>
+  </div>
+
+  <div class="cart-bar" id="cart-bar" onclick="openCart()" style="display:none">
+    <div class="cart-left">
+      <div class="cart-bar-title">🛒 Ver pedido</div>
+      <div class="cart-bar-sub" id="cart-count-label">0 productos</div>
+    </div>
+    <div class="cart-bar-total" id="cart-bar-total">Q0</div>
+  </div>
+
+  <div class="version-badge" id="ver-label">Precios para cafetería</div>
+</div>
+
+<div class="cart-modal" id="cart-modal">
+  <div class="cart-sheet">
+    <div class="cart-header">
+      <h2>Tu pedido</h2>
+      <button class="close-btn" onclick="closeCart()">✕</button>
+    </div>
+    <div id="cart-items-list"></div>
+    <div class="cart-total-row" id="cart-total-row" style="display:none">
+      <span class="cart-total-label">Total</span>
+      <span class="cart-total-val" id="cart-total-display">Q0</span>
+    </div>
+    <button class="wa-btn" id="wa-btn" onclick="sendWhatsApp()">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Enviar pedido por WhatsApp
+    </button>
+  </div>
+</div>
+
+<script>
+const EXTRA = 0;
+const WA_NUMBER = '50234893358';
+
+const menuData = {
+  refacciones: [
+    {name:'Combo hamburguesa doble + papas + fresco', price:45},
+    {name:'Combo hamburguesa simple + papas + fresco', price:35},
+    {name:'Chevere doble', price:18},
+    {name:'Chevere simple', price:14},
+    {name:'Sandwich de jamón', price:10},
+    {name:'Sandwich de huevo', price:15},
+    {name:'Plátanos fritos', price:8},
+    {name:'Pan con huevo', price:10},
+    {name:'Pan con jamón', price:12},
+    {name:'Pan con frijol', price:7},
+  ],
+  frias: [
+    {name:'Licuados', price:14},
+    {name:'Frappes', price:25},
+    {name:'Refrescos', price:7},
+    {name:'Smoothies', price:25},
+  ],
+  calientes: [
+    {name:'Café', price:7},
+    {name:'Café con leche', price:10},
+    {name:'Café con crema', price:10},
+    {name:'Chocolate', price:12},
+  ],
+  postres: [
+    {name:'Crepes de banano', price:27},
+    {name:'Crepes de fresa', price:27},
+    {name:'Crepes mixtas', price:35},
+    {name:'Waffles', price:25},
+    {name:'Flan', price:10},
+    {name:'Gelatina', price:5},
+    {name:'Gelatina mosaico', price:15},
+  ]
+};
+
+let cart = {};
+
+function finalPrice(p){ return p + EXTRA; }
+
+function renderGrid(gridId, items){
+  const grid = document.getElementById(gridId);
+  if(!grid) return;
+  grid.innerHTML = '';
+  items.forEach((item,i)=>{
+    const key = gridId+'-'+i;
+    const qty = cart[key]?.qty || 0;
+    const fp = finalPrice(item.price);
+    const card = document.createElement('div');
+    card.className = 'item-card' + (qty>0?' in-cart':'');
+    card.id = 'card-'+key;
+    card.innerHTML = `
+      <div class="item-name">${item.name}</div>
+      <div class="item-price">Q${fp}</div>
+      ${qty>0?`<div class="item-qty">${qty}</div>`:''}
+      <div class="add-btn" onclick="addItem('${key}','${item.name.replace(/'/g,"\\'")}',${fp})">+</div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function renderAll(){
+  renderGrid('grid-refacciones', menuData.refacciones);
+  renderGrid('grid-frias', menuData.frias);
+  renderGrid('grid-calientes', menuData.calientes);
+  renderGrid('grid-postres', menuData.postres);
+  updateCartBar();
+}
+
+function addItem(key, name, price){
+  if(!cart[key]) cart[key]={name,price,qty:0};
+  cart[key].qty++;
+  renderAll();
+}
+
+function changeQty(key, delta){
+  if(!cart[key]) return;
+  cart[key].qty += delta;
+  if(cart[key].qty <= 0) delete cart[key];
+  renderAll();
+  renderCartList();
+}
+
+function updateCartBar(){
+  const keys = Object.keys(cart);
+  const total = keys.reduce((s,k)=>s+cart[k].price*cart[k].qty,0);
+  const count = keys.reduce((s,k)=>s+cart[k].qty,0);
+  const bar = document.getElementById('cart-bar');
+  if(count>0){
+    bar.style.display='flex';
+    document.getElementById('cart-bar-total').textContent='Q'+total;
+    document.getElementById('cart-count-label').textContent=count+' producto'+(count>1?'s':'');
+  } else {
+    bar.style.display='none';
+  }
+}
+
+function openCart(){
+  document.getElementById('cart-modal').classList.add('open');
+  renderCartList();
+}
+
+function closeCart(){
+  document.getElementById('cart-modal').classList.remove('open');
+}
+
+function renderCartList(){
+  const list = document.getElementById('cart-items-list');
+  const keys = Object.keys(cart);
+  if(keys.length===0){
+    list.innerHTML='<div class="empty-cart">Tu carrito está vacío</div>';
+    document.getElementById('cart-total-row').style.display='none';
+    return;
+  }
+  document.getElementById('cart-total-row').style.display='flex';
+  const total = keys.reduce((s,k)=>s+cart[k].price*cart[k].qty,0);
+  list.innerHTML = keys.map(k=>`
+    <div class="cart-item">
+      <div class="cart-item-name">${cart[k].name}</div>
+      <div class="cart-item-controls">
+        <button class="qty-btn" onclick="changeQty('${k}',-1)">−</button>
+        <span class="cart-item-qty">${cart[k].qty}</span>
+        <button class="qty-btn" onclick="changeQty('${k}',1)">+</button>
+      </div>
+      <div class="cart-item-subtotal">Q${cart[k].price*cart[k].qty}</div>
+    </div>
+  `).join('');
+  document.getElementById('cart-total-display').textContent='Q'+total;
+}
+
+function sendWhatsApp(){
+  const keys = Object.keys(cart);
+  if(keys.length===0) return;
+  const badge = document.getElementById('version-badge').textContent;
+  let msg = '🍽️ *Pedido - Delicias Álvarez*\n';
+  msg += '_('+badge+')_\n\n';
+  keys.forEach(k=>{
+    msg += `• ${cart[k].name} x${cart[k].qty} — Q${cart[k].price*cart[k].qty}\n`;
+  });
+  const total = keys.reduce((s,k)=>s+cart[k].price*cart[k].qty,0);
+  msg += `\n*Total: Q${total}*`;
+  const url = 'https://wa.me/'+WA_NUMBER+'?text='+encodeURIComponent(msg);
+  window.open(url,'_blank');
+}
+
+function showSection(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+renderAll();
+</script>
