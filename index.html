@@ -9,9 +9,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@300;400;700&display=swap');
 
 *{
-  box-sizing:border-box;
   margin:0;
   padding:0;
+  box-sizing:border-box;
 }
 
 body{
@@ -22,7 +22,7 @@ body{
   font-family:'Lato',sans-serif;
   background:linear-gradient(135deg,#3d1c02 0%,#6b3a1f 50%,#3d1c02 100%);
   min-height:100vh;
-  padding:0 0 2rem;
+  padding-bottom:2rem;
 }
 
 .header{
@@ -35,34 +35,31 @@ body{
   font-family:'Playfair Display',serif;
   color:#f5d89e;
   font-size:2.2rem;
-  letter-spacing:2px;
 }
 
 .header p{
   color:#d4a96a;
-  font-size:0.85rem;
-  letter-spacing:3px;
-  text-transform:uppercase;
-  margin-top:4px;
+  margin-top:5px;
+  letter-spacing:2px;
 }
 
 .badge{
   display:inline-block;
   background:#d4a96a;
   color:#3d1c02;
-  font-size:0.7rem;
-  font-weight:700;
-  padding:3px 10px;
-  border-radius:12px;
-  margin-top:8px;
+  padding:4px 12px;
+  border-radius:20px;
+  margin-top:10px;
+  font-size:0.8rem;
+  font-weight:bold;
 }
 
 .tabs{
   display:flex;
   justify-content:center;
-  gap:8px;
-  padding:1rem;
+  gap:10px;
   flex-wrap:wrap;
+  padding:1rem;
 }
 
 .tab{
@@ -90,67 +87,67 @@ body{
 }
 
 .section-title{
-  font-family:'Playfair Display',serif;
   color:#f5d89e;
-  font-size:1.1rem;
   text-align:center;
   margin:1rem 0;
+  font-size:1.2rem;
+  font-family:'Playfair Display',serif;
 }
 
 .items-grid{
   display:grid;
   grid-template-columns:repeat(2,1fr);
-  gap:10px;
+  gap:12px;
 }
 
 .item-card{
   background:rgba(255,255,255,0.08);
-  border:1px solid rgba(212,169,106,0.25);
   border-radius:12px;
-  padding:12px;
+  padding:14px;
   position:relative;
+  border:1px solid rgba(212,169,106,0.2);
 }
 
 .item-name{
   color:#f5d89e;
-  font-size:0.85rem;
-  font-weight:700;
-  margin-bottom:4px;
+  font-weight:bold;
+  margin-bottom:6px;
+  font-size:0.9rem;
 }
 
 .item-price{
   color:#d4a96a;
   font-size:1rem;
-  font-weight:700;
+  font-weight:bold;
 }
 
 .add-btn{
   position:absolute;
-  bottom:8px;
-  right:8px;
-  background:#d4a96a;
-  color:#3d1c02;
+  right:10px;
+  bottom:10px;
+  width:30px;
+  height:30px;
   border:none;
   border-radius:50%;
-  width:28px;
-  height:28px;
-  cursor:pointer;
+  background:#d4a96a;
+  color:#3d1c02;
   font-size:1rem;
+  cursor:pointer;
 }
 
 .item-qty{
   position:absolute;
-  top:8px;
-  right:8px;
+  top:10px;
+  right:10px;
   background:#fff;
-  color:#000;
-  border-radius:50%;
   width:22px;
   height:22px;
+  border-radius:50%;
   display:flex;
   align-items:center;
   justify-content:center;
   font-size:0.75rem;
+  font-weight:bold;
 }
 
 .cart-bar{
@@ -214,29 +211,9 @@ body{
 .cart-item{
   display:flex;
   justify-content:space-between;
-  align-items:center;
   padding:10px 0;
   border-bottom:1px solid rgba(255,255,255,0.1);
-}
-
-.cart-item-name{
   color:#fff;
-  flex:1;
-}
-
-.qty-btn{
-  width:28px;
-  height:28px;
-  border:none;
-  border-radius:6px;
-  background:#d4a96a;
-  cursor:pointer;
-}
-
-.cart-item-controls{
-  display:flex;
-  align-items:center;
-  gap:8px;
 }
 
 .cart-total-row{
@@ -244,6 +221,7 @@ body{
   justify-content:space-between;
   margin-top:1rem;
   color:#fff;
+  font-weight:bold;
 }
 
 .wa-btn{
@@ -260,16 +238,16 @@ body{
 
 @media(max-width:768px){
 
-  .header h1{
-    font-size:1.7rem;
-  }
-
   .items-grid{
     grid-template-columns:1fr;
   }
 
   .tab{
     width:100%;
+  }
+
+  .header h1{
+    font-size:1.7rem;
   }
 
 }
@@ -309,7 +287,7 @@ body{
 
 <div class="cart-bar" id="cart-bar" onclick="openCart()">
 <div>
-<div><strong>🛒 Ver pedido</strong></div>
+<strong>🛒 Ver pedido</strong>
 <div id="cart-count-label">0 productos</div>
 </div>
 <div class="cart-bar-total" id="cart-bar-total">Q0</div>
@@ -318,6 +296,7 @@ body{
 </div>
 
 <div class="cart-modal" id="cart-modal">
+
 <div class="cart-sheet">
 
 <div class="cart-header">
@@ -344,24 +323,41 @@ Enviar pedido por WhatsApp
 const WA_NUMBER='50234893358';
 
 const menuData={
+
 refacciones:[
-{name:'Hamburguesa doble',price:45},
-{name:'Hamburguesa simple',price:35},
+{name:'Combo hamburguesa doble + papas + fresco',price:45},
+{name:'Combo hamburguesa simple + papas + fresco',price:35},
+{name:'Chevere doble',price:18},
+{name:'Chevere simple',price:14},
 {name:'Sandwich de jamón',price:10},
-{name:'Plátanos fritos',price:8}
+{name:'Sandwich de huevo',price:15},
+{name:'Plátanos fritos',price:8},
+{name:'Pan con huevo',price:10},
+{name:'Pan con jamón',price:12},
+{name:'Pan con frijol',price:7}
 ],
 
 bebidas:[
 {name:'Licuados',price:14},
 {name:'Frappes',price:25},
-{name:'Café',price:7}
+{name:'Refrescos',price:7},
+{name:'Smoothies',price:25},
+{name:'Café',price:7},
+{name:'Café con leche',price:10},
+{name:'Café con crema',price:10},
+{name:'Chocolate',price:12}
 ],
 
 postres:[
-{name:'Crepes',price:27},
+{name:'Crepes de banano',price:27},
+{name:'Crepes de fresa',price:27},
+{name:'Crepes mixtas',price:35},
 {name:'Waffles',price:25},
-{name:'Flan',price:10}
+{name:'Flan',price:10},
+{name:'Gelatina',price:5},
+{name:'Gelatina mosaico',price:15}
 ]
+
 };
 
 let cart={};
@@ -375,6 +371,7 @@ grid.innerHTML='';
 items.forEach((item,i)=>{
 
 const key=id+i;
+
 const qty=cart[key]?.qty||0;
 
 grid.innerHTML+=`
@@ -436,7 +433,9 @@ document.getElementById('cart-bar-total').textContent='Q'+total;
 document.getElementById('cart-count-label').textContent=count+' productos';
 
 }else{
+
 bar.style.display='none';
+
 }
 }
 
@@ -472,7 +471,7 @@ list.innerHTML+=`
 
 <div class="cart-item">
 
-<div class="cart-item-name">
+<div>
 ${item.name} x${item.qty}
 </div>
 
